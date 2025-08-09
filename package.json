@@ -1,0 +1,116 @@
+{
+  "name": "pg-vscode-formatter",
+  "displayName": "PG Formatter + Linter (libpg_query)",
+  "description": "Opinionated SQL/PLpgSQL formatter & linter for PostgreSQL using libpg_query (WASM).",
+  "version": "0.0.1",
+  "publisher": "you",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Formatters",
+    "Linters"
+  ],
+  "activationEvents": [
+    "onLanguage:sql",
+    "onLanguage:plpgsql"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "sql",
+        "extensions": [
+          ".sql"
+        ],
+        "aliases": [
+          "SQL"
+        ]
+      },
+      {
+        "id": "plpgsql",
+        "extensions": [
+          ".pgsql",
+          ".psql"
+        ],
+        "aliases": [
+          "PLpgSQL"
+        ]
+      }
+    ],
+    "configuration": {
+      "title": "PG Formatter",
+      "properties": {
+        "pgFormatter.indentSize": {
+          "type": "number",
+          "default": 2
+        },
+        "pgFormatter.keywords": {
+          "type": "string",
+          "enum": [
+            "upper",
+            "lower",
+            "preserve"
+          ],
+          "default": "upper"
+        },
+        "pgFormatter.commaPosition": {
+          "type": "string",
+          "enum": [
+            "end",
+            "leading"
+          ],
+          "default": "end"
+        },
+        "pgFormatter.lineWidth": {
+          "type": "number",
+          "default": 100
+        },
+        "pgFormatter.preserveComments": {
+          "type": "string",
+          "enum": [
+            "all",
+            "line",
+            "block",
+            "none"
+          ],
+          "default": "all"
+        },
+        "pgLinter.enable": {
+          "type": "boolean",
+          "default": true
+        },
+        "pgLinter.paramPrefix": {
+          "type": "string",
+          "default": "p"
+        },
+        "pgLinter.declarePrefix": {
+          "type": "string",
+          "default": "v"
+        },
+        "pgLinter.disallowFirstCTEName": {
+          "type": "string",
+          "default": "source"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "tsc -p ./",
+    "watch": "tsc -w -p ./",
+    "lint": "eslint . --ext .ts",
+    "test:goldens": "npm run build && node scripts/run-tests.mjs",
+    "test:update": "UPDATE_GOLDENS=1 npm run test:goldens",
+    "test:watch": "npm run build && node --watch scripts/run-tests.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.90.0",
+    "eslint": "^9.6.0",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "libpg-query": "^17.6.0"
+  }
+}
